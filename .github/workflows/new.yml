@@ -1,0 +1,46 @@
+name: jira
+
+on:
+  pull_request
+
+jobs:
+  deploy:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+  
+      - uses: actions/github-script@v6
+        with:
+         script: |
+           github.rest.git.createRef({
+             owner: context.repo.owner,
+             repo: context.repo.repo,
+             ref: 'refs/heads/featureA',
+             sha: context.sha
+           }) 
+
+      - name: Set GitHub Summary
+        run: |
+          echo "This is the lead in sentence for the list" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
+          echo "- Lets add a bullet point" >> $GITHUB_STEP_SUMMARY
+          echo "- Lets add a second bullet point" >> $GITHUB_STEP_SUMMARY
+          echo "- How about a third one?" >> $GITHUB_STEP_SUMMARY
+        shell: bash
+   
+      - name: Set GitHub Path
+        run: |
+          echo "Hello there" >> "$GITHUB_STEP_SUMMARY"
+        shell: bash
+
+      - name: Set GitHub Path
+        run: |
+          echo "Hello my" >> "$GITHUB_STEP_SUMMARY"
+        shell: bash
+      - name: run action
+        uses: first-org-ea-sandbox/actionless/.github/workflows/new.yml@v2
