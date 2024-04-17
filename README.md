@@ -1,3 +1,4 @@
 # codeqlTest
 
 ghp_8NeSjiUqSJBYTzCdswxhpRjvLuKue93B4wsh
+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
