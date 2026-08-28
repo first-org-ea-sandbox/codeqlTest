@@ -1,0 +1,53 @@
+name: Concurrency Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+# Ensures only one run of this workflow per branch/ref runs at a time;
+# a new run cancels any in-progress run for the same group.
+concurrency:
+  group: concurrency-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  job-a:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulate work
+        run: |
+          echo "Job A starting at $(date)"
+          sleep 15
+          echo "Job A finished at $(date)"
+
+  job-b:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulate work
+        run: |
+          echo "Job B starting at $(date)"
+          sleep 15
+          echo "Job B finished at $(date)"
+
+  job-c:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulate work
+        run: |
+          echo "Job C starting at $(date)"
+          sleep 15
+          echo "Job C finished at $(date)"
+
+  job-d-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
+      fail-fast: false
+    steps:
+      - name: Simulate parallel matrix work
+        run: |
+          echo "Matrix shard ${{ matrix.shard }} starting at $(date)"
+          sleep 10
+          echo "Matrix shard ${{ matrix.shard }} finished at $(date)"
