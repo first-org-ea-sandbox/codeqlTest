@@ -1,7 +1,7 @@
 name: jira
 
 on:
-  pull_request
+  push
 
 jobs:
   deploy:
